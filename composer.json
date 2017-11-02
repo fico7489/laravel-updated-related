@@ -24,7 +24,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Fico7489\\Laravel\\LaravelUpdatedRelated\\": "src/Fico7489/Laravel/LaravelUpdatedRelated/"
+            "Fico7489\\Laravel\\UpdatedRelated\\": "src/Fico7489/Laravel/UpdatedRelated/"
         }
     }
 }
