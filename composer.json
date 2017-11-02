@@ -1,0 +1,30 @@
+{
+    "name": "fico7489/laravel-updated-related",
+    "type": "library",
+    "description": "The package adds new updated event for the model when any of related model updates.",
+    "keywords": [
+        "Laravel",
+        "Laravel event",
+        "Laravel events",
+        "Laravel related"
+    ],
+    "homepage": "https://github.com/fico7489/LaravelUpdatedRelated",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Filip Horvat",
+            "email": "filip.horvat@am2studio.hr",
+            "homepage": "http://am2studio.hr",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php" : ">=5.4.0",
+        "laravel/framework": ">=5.2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Fico7489\\Laravel\\LaravelUpdatedRelated\\": "src/Fico7489/Laravel/LaravelUpdatedRelated/"
+        }
+    }
+}
