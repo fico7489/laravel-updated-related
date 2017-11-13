@@ -14,6 +14,17 @@ class ProcessRelatedMiddleware
 
         $configurations = \Config::get('laravel-updated-related');
 
+        foreach ($configurations as $baseModel => $enviroments) {
+            foreach ($enviroments as $k => $enviroment) {
+                if (!array_key_exists('name', $enviroment)) {
+                    $configurations[$baseModel][$k] = [
+                        'name' => 'default',
+                        'related' => $enviroment,
+                    ];
+                }
+            }
+        }
+
         $events = [];
         foreach ($configurations as $baseModel => $enviroments) {
             foreach ($enviroments as $enviroment) {
