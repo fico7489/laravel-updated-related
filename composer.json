@@ -1,14 +1,19 @@
 {
     "name": "fico7489/laravel-updated-related",
-    "type": "library",
     "description": "The package adds new updated event for the model when any of related model updates.",
     "keywords": [
-        "Laravel",
-        "Laravel event",
-        "Laravel events",
-        "Laravel related"
+        "laravel",
+        "related models",
+        "laravel related models",
+        "laravel updated related",
+        "laravel eloquent models",
+        "laravel related models event"
     ],
-    "homepage": "https://github.com/fico7489/LaravelUpdatedRelated",
+    "homepage": "https://github.com/fico7489/laravel-updated-related",
+    "support": {
+        "issues": "https://github.com/fico7489/laravel-updated-related/issues",
+        "source": "https://github.com/fico7489/laravel-updated-related"
+    },
     "license": "MIT",
     "authors": [
         {
@@ -19,12 +24,23 @@
         }
     ],
     "require": {
-        "php" : ">=5.4.0",
-        "laravel/framework": ">=5.2.0"
+        "laravel/framework": "5.2.*"
+    },
+    "require-dev": {
+        "mockery/mockery": "^0.9",
+        "orchestra/testbench": "3.2.*",
+        "phpunit/phpunit": "~4.8|~5.0"
     },
     "autoload": {
         "psr-4": {
             "Fico7489\\Laravel\\UpdatedRelated\\": "src"
         }
-    }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Fico7489\\Laravel\\UpdatedRelated\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
