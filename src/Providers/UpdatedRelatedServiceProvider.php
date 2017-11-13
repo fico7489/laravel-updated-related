@@ -11,4 +11,11 @@ class UpdatedRelatedServiceProvider extends ServiceProvider
     {
         app(\Illuminate\Contracts\Http\Kernel::class)->prependMiddleware(ProcessRelatedMiddleware::class);
     }
+
+    public function boot()
+    {
+        $this->publishes([
+            __DIR__.'/../../config/laravel-updated-related.php' => config_path('laravel-updated-related.php', 'config'),
+        ]);
+    }
 }

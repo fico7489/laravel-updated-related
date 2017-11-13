@@ -14,22 +14,22 @@ class ProcessRelatedMiddleware
 
         $configurations = \Config::get('laravel-updated-related');
 
-        foreach ($configurations as $baseModel => $enviroments) {
-            foreach ($enviroments as $k => $enviroment) {
-                if (!array_key_exists('name', $enviroment)) {
+        foreach ($configurations as $baseModel => $environments) {
+            foreach ($environments as $k => $environment) {
+                if (!array_key_exists('name', $environment)) {
                     $configurations[$baseModel][$k] = [
                         'name' => 'default',
-                        'related' => $enviroment,
+                        'related' => $environment,
                     ];
                 }
             }
         }
 
         $events = [];
-        foreach ($configurations as $baseModel => $enviroments) {
-            foreach ($enviroments as $enviroment) {
-                $name          = $enviroment['name'];
-                $relatedModels = $enviroment['related'];
+        foreach ($configurations as $baseModel => $environments) {
+            foreach ($environments as $environment) {
+                $name          = $environment['name'];
+                $relatedModels = $environment['related'];
 
                 $ids = collect();
                 foreach (UpdateRelated::$events as $modelEvent => $idsEvent) {
@@ -52,10 +52,10 @@ class ProcessRelatedMiddleware
             }
         }
 
-        foreach($events as $baseModel => $enviroment){
-            foreach($enviroment as $name => $ids){
+        foreach($events as $baseModel => $environment){
+            foreach($environment as $environmentName => $ids){
                 foreach($ids as $id){
-                    event(new ModelChanged($id, $baseModel, $name));
+                    event(new ModelChanged($id, $baseModel, $environmentName));
                 }
             }
         }
