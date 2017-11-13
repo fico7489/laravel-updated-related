@@ -53,9 +53,9 @@ class ProcessRelatedMiddleware
         }
 
         foreach($events as $baseModel => $enviroment){
-            foreach($enviroment as $enviromentName => $ids){
+            foreach($enviroment as $name => $ids){
                 foreach($ids as $id){
-                    event(new ModelChanged($id, $baseModel, $enviromentName));
+                    event(new ModelChanged($id, $baseModel, $name));
                 }
             }
         }

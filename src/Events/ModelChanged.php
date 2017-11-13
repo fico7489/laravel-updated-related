@@ -6,13 +6,13 @@ class ModelChanged
 {
     private $id;
     private $model;
-    private $enviroment;
+    private $name;
 
-    public function __construct($id, $model, $enviroment)
+    public function __construct($id, $model, $name)
     {
-        $this->id = $id;
-        $this->model  = $model;
-        $this->enviroment  = $enviroment;
+        $this->id    = $id;
+        $this->model = $model;
+        $this->name  = $name;
     }
 
     public function getId()
@@ -25,8 +25,8 @@ class ModelChanged
         return $this->model;
     }
 
-    public function getEnviroment()
+    public function getName()
     {
-        return $this->enviroment;
+        return $this->name;
     }
 }
