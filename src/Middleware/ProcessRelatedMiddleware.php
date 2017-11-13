@@ -3,6 +3,7 @@
 namespace Fico7489\Laravel\UpdatedRelated\Middleware;
 
 use Closure;
+use Fico7489\Laravel\UpdatedRelated\Events\ModelChanged;
 use Fico7489\Laravel\UpdatedRelated\Services\UpdateRelated;
 
 class ProcessRelatedMiddleware
@@ -11,27 +12,42 @@ class ProcessRelatedMiddleware
     {
         $response = $next($request);
 
-        $config = \Config::get('laravel-updated-related');
+        $configurations = \Config::get('laravel-updated-related');
 
-        $ids = collect();
-        foreach (UpdateRelated::$events as $modelEvent => $idsEvent) {
-            foreach ($config as $modelRoot => $configurationModel) {
-                if (array_key_exists($modelEvent, $configurationModel)) {
-                    $relations = $configurationModel[$modelEvent];
+        $events = [];
+        foreach ($configurations as $baseModel => $enviroments) {
+            foreach ($enviroments as $enviroment) {
+                $name          = $enviroment['name'];
+                $relatedModels = $enviroment['related'];
 
-                    $idsTmp = $modelRoot::whereHas($relations, function ($query) use ($idsEvent) {
-                        return $query->whereIn('id', $idsEvent);
-                    })->get()->pluck('id');
+                $ids = collect();
+                foreach (UpdateRelated::$events as $modelEvent => $idsEvent) {
+                    if (array_key_exists($modelEvent, $relatedModels)) {
+                        $relation = $relatedModels[$modelEvent];
 
-                    $ids = $ids->merge($idsTmp)->unique();
+                        $idsTmp = $baseModel::whereHas($relation, function ($query) use ($idsEvent) {
+                            return $query->whereIn('id', $idsEvent);
+                        })->get()->pluck('id');
+
+                        $ids = $ids->merge($idsTmp);
+                    }
+
+                    if ($modelEvent == $baseModel) {
+                        $ids = $ids->merge($idsEvent);
+                    }
                 }
+                $ids = $ids->unique()->sort();
+                $events[$baseModel][$name] = $ids;
+            }
+        }
 
-                if ($modelEvent == $modelRoot) {
-                    $ids = $ids->merge($idsEvent);
+        foreach($events as $baseModel => $enviroment){
+            foreach($enviroment as $enviromentName => $ids){
+                foreach($ids as $id){
+                    event(new ModelChanged($id, $baseModel, $enviromentName));
                 }
             }
         }
-        $ids = $ids->unique()->sort();
 
         return $response;
     }
