@@ -27,7 +27,9 @@ php artisan vendor:publish  --provider="Fico7489\Laravel\UpdatedRelated\Provider
 ```
 and after that adjust configuration, see more in below section.
 
-4.Use Fico7489\Laravel\UpdatedRelated\Events\ModelChanged event which will be fired when any base model or any related model is updated, created or deleted.
+4.Use Fico7489\Laravel\UpdatedRelated\Traits\UpdatedRelatedTrait in your base model or only in  a smaller set of models if you want
+
+5.Use Fico7489\Laravel\UpdatedRelated\Events\ModelChanged event which will be fired when any base model or any related model is updated, created or deleted.
 
 and that's it, enjoy.
 
