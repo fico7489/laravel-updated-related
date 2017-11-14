@@ -52,8 +52,12 @@ class UpdateRelated
                 self::$eventsProcessed[$baseModel][$name] += $ids->toArray();
             }
         }
-
-
+        self::$events = [];
+    }
+    
+    public static function fireEvents(){
+        self::processEvents();
+        
         foreach(self::$eventsProcessed as $baseModel => $environments){
             foreach ($environments as $environmentName => $ids) {
                 foreach($ids as $id){
@@ -62,7 +66,6 @@ class UpdateRelated
             }
         }
         
-        self::$events = [];
         self::$eventsProcessed = [];
     }
 }

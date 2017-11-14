@@ -12,7 +12,7 @@ class ProcessRelatedMiddleware
     {
         $response = $next($request);
 
-        UpdateRelated::processEvents();
+        UpdateRelated::fireEvents();
 
         return $response;
     }

@@ -46,7 +46,7 @@ class LaravelUpdatedRelatedTest extends TestCase
     {
         $this->startListening();
         User::create();
-        UpdateRelated::processEvents();
+        UpdateRelated::fireEvents();
         
         $this->assertEquals(2, count(TestListener::$events));
         $this->assertEquals(4, TestListener::$events[0]->getId());
@@ -59,7 +59,7 @@ class LaravelUpdatedRelatedTest extends TestCase
     {
         $this->startListening();
         User::find(1)->update(['email' => 'test@test.com']);
-        UpdateRelated::processEvents();
+        UpdateRelated::fireEvents();
         $this->assertEquals(2, count(TestListener::$events));
     }
     
@@ -67,7 +67,7 @@ class LaravelUpdatedRelatedTest extends TestCase
     {
         $this->startListening();
         User::find(1)->forceDelete();
-        UpdateRelated::processEvents();
+        UpdateRelated::fireEvents();
         $this->assertEquals(2, count(TestListener::$events));
     }
     
@@ -76,7 +76,7 @@ class LaravelUpdatedRelatedTest extends TestCase
     {
         $this->startListening();
         Order::create(['user_id' => 1]);
-        UpdateRelated::processEvents();
+        UpdateRelated::fireEvents();
         $this->assertEquals(1, count(TestListener::$events));
     }
     
@@ -84,7 +84,7 @@ class LaravelUpdatedRelatedTest extends TestCase
     {
         $this->startListening();
         Order::find(1)->update(['number' => 1]);
-        UpdateRelated::processEvents();
+        UpdateRelated::fireEvents();
         $this->assertEquals(1, count(TestListener::$events));
     }
     
@@ -92,7 +92,7 @@ class LaravelUpdatedRelatedTest extends TestCase
     {
         $this->startListening();
         Order::find(1)->forceDelete();
-        UpdateRelated::processEvents();
+        UpdateRelated::fireEvents();
         $this->assertEquals(1, count(TestListener::$events));
     }
     
@@ -101,7 +101,7 @@ class LaravelUpdatedRelatedTest extends TestCase
     {
         $this->startListening();
         OrderItem::create(['order_id' => 1]);
-        UpdateRelated::processEvents();
+        UpdateRelated::fireEvents();
         $this->assertEquals(1, count(TestListener::$events));
     }
     
@@ -109,7 +109,7 @@ class LaravelUpdatedRelatedTest extends TestCase
     {
         $this->startListening();
         OrderItem::find(1)->update(['name' => 'item 2']);
-        UpdateRelated::processEvents();
+        UpdateRelated::fireEvents();
         $this->assertEquals(1, count(TestListener::$events));
     }
     
@@ -117,7 +117,7 @@ class LaravelUpdatedRelatedTest extends TestCase
     {
         $this->startListening();
         OrderItem::find(1)->forceDelete();
-        UpdateRelated::processEvents();
+        UpdateRelated::fireEvents();
         $this->assertEquals(1, count(TestListener::$events));
     }
     
@@ -126,7 +126,7 @@ class LaravelUpdatedRelatedTest extends TestCase
     {
         $this->startListening();
         OrderItem::create(['order_id' => 3]);
-        UpdateRelated::processEvents();
+        UpdateRelated::fireEvents();
         $this->assertEquals(2, TestListener::$events[0]->getId());
     }
     
@@ -134,7 +134,7 @@ class LaravelUpdatedRelatedTest extends TestCase
     {
         $this->startListening();
         OrderItem::find(6)->update(['name' => 'item 2']);
-        UpdateRelated::processEvents();
+        UpdateRelated::fireEvents();
         $this->assertEquals(2, TestListener::$events[0]->getId());
     }
     
@@ -142,7 +142,7 @@ class LaravelUpdatedRelatedTest extends TestCase
     {
         $this->startListening();
         OrderItem::find(6)->forceDelete();
-        UpdateRelated::processEvents();
+        UpdateRelated::fireEvents();
         $this->assertEquals(2, TestListener::$events[0]->getId());
     }
     
@@ -153,7 +153,7 @@ class LaravelUpdatedRelatedTest extends TestCase
         User::find(1)->update(['email' => 'test@test.com']);
         Order::find(3)->update(['number' => 1]);
         OrderItem::find(7)->update(['name' => 'item 2']);
-        UpdateRelated::processEvents();
+        UpdateRelated::fireEvents();
         $this->assertEquals(4, count(TestListener::$events));
     }
     
@@ -162,6 +162,7 @@ class LaravelUpdatedRelatedTest extends TestCase
         $this->startListening();
         User::find(1)->update(['email' => 'test@test.com']);
         Order::find(3)->forceDelete();
+        UpdateRelated::fireEvents();
         $this->assertEquals(3, count(TestListener::$events));
     }
 }
