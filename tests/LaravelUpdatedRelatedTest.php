@@ -175,6 +175,7 @@ class LaravelUpdatedRelatedTest extends TestCase
         $seller2 = Seller::create(['name' => 'seller2']);
         $address = Address::create(['name' => 'address', 'seller_id' => $seller->id]);
         UpdateRelated::fireEvents();
+        UpdateRelated::fireEvents();
         $this->assertEquals(2, count(TestListener::$events));
     }
 }
