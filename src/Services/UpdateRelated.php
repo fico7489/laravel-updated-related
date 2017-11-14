@@ -21,7 +21,7 @@ class UpdateRelated
                 }
             }
         }
-        
+
         $events = [];
         foreach ($configurations as $baseModel => $environments) {
             foreach ($environments as $environment) {

@@ -19,10 +19,12 @@ class LaravelUpdatedRelatedTest extends TestCase
 
         $user = User::create();
         $user2 = User::create();
+        $user3 = User::create();
 
         $order = Order::create(['user_id' => $user->id]);
         $order2 = Order::create(['user_id' => $user->id]);
         $order3 = Order::create(['user_id' => $user2->id]);
+        $order4 = Order::create(['user_id' => $user3->id]);
         
         $orderItem = OrderItem::create(['order_id' => $order->id]);
         
@@ -32,6 +34,7 @@ class LaravelUpdatedRelatedTest extends TestCase
         $orderItem4 = OrderItem::create(['order_id' => $order3->id]);
         $orderItem5 = OrderItem::create(['order_id' => $order3->id]);
         $orderItem6 = OrderItem::create(['order_id' => $order3->id]);
+        $orderItem7 = OrderItem::create(['order_id' => $order4->id]);
     }
     
     private function startListening(){
@@ -46,7 +49,7 @@ class LaravelUpdatedRelatedTest extends TestCase
         UpdateRelated::processEvents();
         
         $this->assertEquals(2, count(TestListener::$events));
-        $this->assertEquals(3, TestListener::$events[0]->getId());
+        $this->assertEquals(4, TestListener::$events[0]->getId());
         $this->assertEquals(\Fico7489\Laravel\UpdatedRelated\Tests\Models\User::class, TestListener::$events[0]->getModel());
         $this->assertEquals('default', TestListener::$events[0]->getName());
         $this->assertEquals('special', TestListener::$events[1]->getName());
@@ -142,4 +145,16 @@ class LaravelUpdatedRelatedTest extends TestCase
         UpdateRelated::processEvents();
         $this->assertEquals(2, TestListener::$events[0]->getId());
     }
+    
+    
+    public function test_three_events()
+    {
+        $this->startListening();
+        User::find(1)->update(['email' => 'test@test.com']);
+        Order::find(3)->update(['number' => 1]);
+        OrderItem::find(7)->update(['name' => 'item 2']);
+        UpdateRelated::processEvents();
+        $this->assertEquals(4, count(TestListener::$events));
+    }
+    
 }
