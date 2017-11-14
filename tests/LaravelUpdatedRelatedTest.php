@@ -87,4 +87,29 @@ class LaravelUpdatedRelatedTest extends TestCase
         UpdateRelated::processEvents();
         $this->assertEquals(1, count(TestListener::$events));
     }
+    
+    
+    public function test_create_related_second()
+    {
+        $this->startListening();
+        OrderItem::create(['order_id' => 1]);
+        UpdateRelated::processEvents();
+        $this->assertEquals(1, count(TestListener::$events));
+    }
+    
+    public function test_update_related_second()
+    {
+        $this->startListening();
+        OrderItem::find(1)->update(['name' => 'item 2']);
+        UpdateRelated::processEvents();
+        $this->assertEquals(1, count(TestListener::$events));
+    }
+    
+    public function test_delete_related_second()
+    {
+        $this->startListening();
+        OrderItem::find(1)->forceDelete();
+        UpdateRelated::processEvents();
+        $this->assertEquals(1, count(TestListener::$events));
+    }
 }
