@@ -6,7 +6,8 @@ Fires ModelChanged event when base model or any related model is updated, create
 
 | Laravel Version | Package Tag | Supported | Branch
 |-----------------|-------------|-----------|-----------|
-| 5.2.x | 1.2 | yes | master
+| 5.3.x | 1.3 | yes | master
+| 5.2.x | 1.2 | yes | 1.2
 | <5.2 | - | no | -
 
 
