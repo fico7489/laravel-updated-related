@@ -4,11 +4,12 @@ Fires ModelChanged event when base model or any related model is updated, create
 
 # Laravel versions
 
-| Laravel Version | Package Tag | Supported | Branch
+| Laravel Version | Package Tag | Supported | Development Branch
 |-----------------|-------------|-----------|-----------|
-| 5.4.x | 2.0 | yes | master
-| 5.3.x | 1.3 | yes | 1.3
-| 5.2.x | 1.2 | yes | 1.2
+| 5.5.x | 2.1.* | yes | master
+| 5.4.x | 2.0.* | yes | 2.0
+| 5.3.x | 1.3.* | yes | 1.3
+| 5.2.x | 1.2.* | yes | 1.2
 | <5.2 | - | no | -
 
 
