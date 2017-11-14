@@ -35,6 +35,8 @@ and that's it, enjoy.
 
 # Configuration
 
+Configuration is located at config/laravel-updated-related.php
+
 1.You can create configuration in simple way : 
 
 ```
