@@ -48,27 +48,29 @@ return [
 ```
 KEYS are base models, VALUES are arrays with related model => relation
 
-2.Or you can create configuration in detailed way : 
+2.Or you can create configuration in detailed way if you need more environments for the same base model. : 
 
 ```
 return [
     \App\Models\User::class => [
-        'name' => 'user-simple',
-        'related' => [
-            \App\Models\DeliveryAddress::class  => 'addresses',
+        [
+            'name' => 'user-simple',
+            'related' => [
+                \App\Models\DeliveryAddress::class  => 'addresses',
+            ],
         ],
-        'name' => 'user-extended',
-        'related' => [
-            \App\Models\Address::class   => 'addresses',
-            \App\Models\OrderItem::class => 'orders.items',
+        [
+            'name' => 'user-extended',
+            'related' => [
+                \App\Models\Address::class   => 'addresses',
+                \App\Models\OrderItem::class => 'orders.items',
+            ],
         ],
     ]
 ];
 ```
 
-If you need more environments for the same base model.
-KEYS are base models, VALUES are arrays with names (environment name) and related configuration (arrays with related models => relations)
-In "simple way" environment will be 'default'.
+KEYS are base models, VALUES are arrays with names (environment name) and related configuration (arrays with related model => relation). In "simple way" environment will be 'default'.
 
 
 # One real example
@@ -89,7 +91,7 @@ Models :
 
 ```
 ...
-class User extends Model
+class User extends BaseModel
 {
     public function addresses()
     {
@@ -100,7 +102,7 @@ class User extends Model
 
 ```
 ...
-class Address extends Model
+class Address extends BaseModel
 {
 ....
 ```
@@ -146,6 +148,15 @@ environment=default
 
 # Pivot events
 If you want to cover pivot events use this package : https://github.com/fico7489/laravel-pivot
+```
+...
+use Fico7489\Laravel\Pivot\Traits\PivotEventTrait;
+
+class BaseModel extends Model
+{
+    use PivotEventTrait;
+...
+```
 
 # Cover all changes in the database
 
