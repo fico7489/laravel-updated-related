@@ -45,6 +45,9 @@ class LaravelUpdatedRelatedTest extends TestCase
         User::create();
         UpdateRelated::processEvents();
         $this->assertEquals(1, count(TestListener::$events));
+        $this->assertEquals(3, TestListener::$events[0]->getId());
+        $this->assertEquals(\Fico7489\Laravel\UpdatedRelated\Tests\Models\User::class, TestListener::$events[0]->getModel());
+        $this->assertEquals('default', TestListener::$events[0]->getName());
     }
     
     public function test_update()
