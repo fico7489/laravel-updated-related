@@ -10,7 +10,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 
         $this->loadMigrationsFrom([
             '--database' => 'testbench',
-            '--realpath' => realpath(__DIR__.'/database/migrations/'),
         ]);
     }
 
@@ -47,6 +46,9 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     
     protected function getPackageProviders($app)
     {
-        return [\Fico7489\Laravel\UpdatedRelated\Tests\EventServiceProvider::class];
+        return [
+            ServiceProvider::class,
+            EventServiceProvider::class,
+        ];
     }
 }
