@@ -46,7 +46,7 @@ Configuration is located at config/laravel-updated-related.php
 return [
     \App\Models\User::class => [
         [
-            \App\Models\DeliveryAddress::class => 'addresses',
+            \App\Models\Address::class         => 'addresses',
             \App\Models\Order::class           => 'orders',
             \App\Models\OrderItem::class       => 'orders.items',
         ],
@@ -63,7 +63,7 @@ return [
         [
             'name' => 'user-simple',
             'related' => [
-                \App\Models\DeliveryAddress::class  => 'addresses',
+                \App\Models\Address::class  => 'addresses',
             ],
         ],
         [
@@ -88,7 +88,7 @@ Configuration :
 return [
     \App\Models\User::class => [
         [
-            \App\Models\DeliveryAddress::class => 'addresses',
+            \App\Models\Address::class => 'addresses',
         ],
     ],
 ];
@@ -102,7 +102,7 @@ class User extends BaseModel
 {
     public function addresses()
     {
-        return $this->hasMany(DeliveryAddress::class);
+        return $this->hasMany(Address::class);
     }
 ...
 ```
