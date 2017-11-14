@@ -18,7 +18,7 @@ Fires ModelChanged event when base model or any related model is updated, create
 
 1.Install package with composer
 ```
-composer require fico7489/laravel-updated-related:"1.*"
+composer require fico7489/laravel-updated-related:"2.*"
 ```
 2.Add service provider to config/app.php
 ```
