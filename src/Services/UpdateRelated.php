@@ -6,6 +6,7 @@ use Fico7489\Laravel\UpdatedRelated\Events\ModelChanged;
 class UpdateRelated
 {
     public static $events = [];
+    public static $eventsProcessed = [];
     public static $cofiguration = [];
     
     public static function processEvents(){
@@ -22,7 +23,6 @@ class UpdateRelated
             }
         }
 
-        $events = [];
         foreach ($configurations as $baseModel => $environments) {
             foreach ($environments as $environment) {
                 $name    = $environment['name'];
@@ -45,12 +45,16 @@ class UpdateRelated
                     }
                 }
                 $ids = $ids->unique()->sort();
-                $events[$baseModel][$name] = $ids;
+                
+                if(empty(self::$eventsProcessed[$baseModel][$name])){
+                    self::$eventsProcessed[$baseModel][$name] = [];
+                }
+                self::$eventsProcessed[$baseModel][$name] += $ids->toArray();
             }
         }
 
 
-        foreach($events as $baseModel => $environments){
+        foreach(self::$eventsProcessed as $baseModel => $environments){
             foreach ($environments as $environmentName => $ids) {
                 foreach($ids as $id){
                     event(new ModelChanged($id, $baseModel, $environmentName));
@@ -59,5 +63,6 @@ class UpdateRelated
         }
         
         self::$events = [];
+        self::$eventsProcessed = [];
     }
 }
