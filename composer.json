@@ -31,6 +31,9 @@
         "orchestra/testbench": "3.2.*",
         "phpunit/phpunit": "~4.8|~5.0"
     },
+    "suggest": {
+        "fico7489/laravel-pivot": "Cover pivot changes."
+    },
     "autoload": {
         "psr-4": {
             "Fico7489\\Laravel\\UpdatedRelated\\": "src"
