@@ -157,4 +157,11 @@ class LaravelUpdatedRelatedTest extends TestCase
         $this->assertEquals(4, count(TestListener::$events));
     }
     
+    public function test_two_with_delete()
+    {
+        $this->startListening();
+        User::find(1)->update(['email' => 'test@test.com']);
+        Order::find(3)->forceDelete();
+        $this->assertEquals(3, count(TestListener::$events));
+    }
 }
