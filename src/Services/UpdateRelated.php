@@ -32,7 +32,7 @@ class UpdateRelated
                 foreach (self::$events as $modelEvent => $idsEvent) {
                     if (array_key_exists($modelEvent, $related)) {
                         $relation = $related[$modelEvent];
-
+                        
                         $idsTmp = $baseModel::whereHas($relation, function ($query) use ($idsEvent) {
                             return $query->whereIn('id', $idsEvent);
                         })->get()->pluck('id');

@@ -44,6 +44,28 @@ class CreateDatabase extends Migration
 
             $table->timestamps();
         });
+        
+        Schema::create('sellers', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name')->nullable();
+            
+            $table->timestamps();
+        });
+        
+        Schema::create('addresses', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name')->nullable();
+            
+            $table->integer('seller_id')->unsigned()->nullable()->index();
+            $table->foreign('seller_id')->references('id')->on('sellers')
+                ->onUpdate('cascade')->onDelete('cascade');
+                
+            $table->integer('user_id')->unsigned()->nullable()->index();
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onUpdate('cascade')->onDelete('cascade');
+            
+            $table->timestamps();
+        });
     }
 
     /**

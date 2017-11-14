@@ -5,6 +5,8 @@ namespace Fico7489\Laravel\UpdatedRelated\Tests;
 use Fico7489\Laravel\UpdatedRelated\Tests\Models\User;
 use Fico7489\Laravel\UpdatedRelated\Tests\Models\Order;
 use Fico7489\Laravel\UpdatedRelated\Tests\Models\OrderItem;
+use Fico7489\Laravel\UpdatedRelated\Tests\Models\Seller;
+use Fico7489\Laravel\UpdatedRelated\Tests\Models\Address;
 use Fico7489\Laravel\UpdatedRelated\Tests\TestListener;
 use Fico7489\Laravel\UpdatedRelated\Services\UpdateRelated;
 use Illuminate\Database\Eloquent\Model;
@@ -164,5 +166,15 @@ class LaravelUpdatedRelatedTest extends TestCase
         Order::find(3)->forceDelete();
         UpdateRelated::fireEvents();
         $this->assertEquals(3, count(TestListener::$events));
+    }
+    
+    public function test_another()
+    {
+        $seller = Seller::create(['name' => 'seller']);
+        $this->startListening();
+        $seller2 = Seller::create(['name' => 'seller2']);
+        $address = Address::create(['name' => 'address', 'seller_id' => $seller->id]);
+        UpdateRelated::fireEvents();
+        $this->assertEquals(2, count(TestListener::$events));
     }
 }

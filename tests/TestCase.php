@@ -41,6 +41,11 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
                     ]
                 ]
             ],
+            \Fico7489\Laravel\UpdatedRelated\Tests\Models\Seller::class => [
+                [
+                    \Fico7489\Laravel\UpdatedRelated\Tests\Models\Address::class => 'addresses',
+                ],
+            ],
         ]);
     }
     
