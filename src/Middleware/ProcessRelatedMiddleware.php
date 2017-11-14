@@ -3,7 +3,6 @@
 namespace Fico7489\Laravel\UpdatedRelated\Middleware;
 
 use Closure;
-use Fico7489\Laravel\UpdatedRelated\Events\ModelChanged;
 use Fico7489\Laravel\UpdatedRelated\Services\UpdateRelated;
 
 class ProcessRelatedMiddleware
