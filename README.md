@@ -150,8 +150,23 @@ model=App\Models\User
 environment=default
 ```
 
+# Cover all changes in the database
+
+Do not use code like this one: 
+```
+User::whereIn('id', $ids)->update(['status' => 'ban']);
+```
+Bacause in that case laravel does not use a model, it runs query directly without a model. To cover above changes you can change this code to :
+```
+$users = User::whereIn('id', $ids);
+foreach($users as $user){
+    $user->update(['status' => 'ban']);
+}
+```
+
 # Pivot events
 If you want to cover pivot events use this package : https://github.com/fico7489/laravel-pivot
+You must use trait PivotEventTrait and add below code to boot() function.
 ```
 ...
 use Fico7489\Laravel\Pivot\Traits\PivotEventTrait;
@@ -159,21 +174,24 @@ use Fico7489\Laravel\Pivot\Traits\PivotEventTrait;
 class BaseModel extends Model
 {
     use PivotEventTrait;
+    
+    public static function boot()
+    {
+        parent::boot();
+
+        static::pivotAttached(function ($model, $relationName, $pivotIds) {
+            self::fillEvents($model);
+        });
+
+        static::pivotDetaching(function ($model, $relationName, $pivotIds) {
+            self::fillEvents($model, true);
+        });
+
+        static::pivotUpdating(function ($model, $relationName, $pivotIds) {
+            self::fillEvents($model);
+        });
+    }
 ...
-```
-
-# Cover all changes in the database
-
-Do not use code like this one: 
-```
-User::whereIn('id', $ids)->update(['status' => 'ban']);
-```
-Bacause in that case laravel does not use a model, it runs query directly without a model. You can change this code to :
-```
-$users = User::whereIn('id', $ids);
-foreach($users as $user){
-    $user->update(['status' => 'ban']);
-}
 ```
 
 # When to use this package
