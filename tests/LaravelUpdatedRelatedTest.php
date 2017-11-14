@@ -44,10 +44,12 @@ class LaravelUpdatedRelatedTest extends TestCase
         $this->startListening();
         User::create();
         UpdateRelated::processEvents();
-        $this->assertEquals(1, count(TestListener::$events));
+        
+        $this->assertEquals(2, count(TestListener::$events));
         $this->assertEquals(3, TestListener::$events[0]->getId());
         $this->assertEquals(\Fico7489\Laravel\UpdatedRelated\Tests\Models\User::class, TestListener::$events[0]->getModel());
         $this->assertEquals('default', TestListener::$events[0]->getName());
+        $this->assertEquals('special', TestListener::$events[1]->getName());
     }
     
     public function test_update()
@@ -55,7 +57,7 @@ class LaravelUpdatedRelatedTest extends TestCase
         $this->startListening();
         User::find(1)->update(['email' => 'test@test.com']);
         UpdateRelated::processEvents();
-        $this->assertEquals(1, count(TestListener::$events));
+        $this->assertEquals(2, count(TestListener::$events));
     }
     
     public function test_delete()
@@ -63,7 +65,7 @@ class LaravelUpdatedRelatedTest extends TestCase
         $this->startListening();
         User::find(1)->forceDelete();
         UpdateRelated::processEvents();
-        $this->assertEquals(1, count(TestListener::$events));
+        $this->assertEquals(2, count(TestListener::$events));
     }
     
     
@@ -114,5 +116,30 @@ class LaravelUpdatedRelatedTest extends TestCase
         OrderItem::find(1)->forceDelete();
         UpdateRelated::processEvents();
         $this->assertEquals(1, count(TestListener::$events));
+    }
+    
+    
+    public function test_create_id()
+    {
+        $this->startListening();
+        OrderItem::create(['order_id' => 3]);
+        UpdateRelated::processEvents();
+        $this->assertEquals(2, TestListener::$events[0]->getId());
+    }
+    
+    public function test_update_id()
+    {
+        $this->startListening();
+        OrderItem::find(6)->update(['name' => 'item 2']);
+        UpdateRelated::processEvents();
+        $this->assertEquals(2, TestListener::$events[0]->getId());
+    }
+    
+    public function test_delete_id()
+    {
+        $this->startListening();
+        OrderItem::find(6)->forceDelete();
+        UpdateRelated::processEvents();
+        $this->assertEquals(2, TestListener::$events[0]->getId());
     }
 }

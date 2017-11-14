@@ -29,9 +29,17 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         ]);
         $app['config']->set('laravel-updated-related', [
             \Fico7489\Laravel\UpdatedRelated\Tests\Models\User::class => [
-                \Fico7489\Laravel\UpdatedRelated\Tests\Models\Order::class => 'orders',
-                \Fico7489\Laravel\UpdatedRelated\Tests\Models\OrderItem::class => 'orders.items',
-                \Fico7489\Laravel\UpdatedRelated\Tests\Models\Address::class => 'addresses',
+                [
+                    \Fico7489\Laravel\UpdatedRelated\Tests\Models\Order::class     => 'orders',
+                    \Fico7489\Laravel\UpdatedRelated\Tests\Models\OrderItem::class => 'orders.items',
+                    \Fico7489\Laravel\UpdatedRelated\Tests\Models\Address::class   => 'addresses',
+                ],
+                [
+                    'name' => 'special',
+                    'related' => [
+                        \Fico7489\Laravel\UpdatedRelated\Tests\Models\Address::class => 'addresses',
+                    ]
+                ]
             ],
         ]);
     }
