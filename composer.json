@@ -24,11 +24,11 @@
         }
     ],
     "require": {
-        "laravel/framework": "5.2.*"
+        "laravel/framework": "5.3.*"
     },
     "require-dev": {
         "mockery/mockery": "^0.9",
-        "orchestra/testbench": "3.2.*",
+        "orchestra/testbench": "3.3.*",
         "phpunit/phpunit": "~4.8|~5.0"
     },
     "suggest": {
