@@ -12,16 +12,19 @@ trait UpdatedRelatedTrait
             self::fillEvents($model);
         });
 
-        static::updated(function ($model) {
+        static::updating(function ($model) {
             self::fillEvents($model);
         });
 
-        static::deleted(function ($model) {
-            self::fillEvents($model);
+        static::deleting(function ($model) {
+            self::fillEvents($model, true);
         });
     }
 
-    private static function fillEvents($model){
+    private static function fillEvents($model, $flush = false){
         UpdateRelated::$events[get_class($model)][] = $model->id;
+        if($flush){
+            UpdateRelated::processEvents();
+        }
     }
 }

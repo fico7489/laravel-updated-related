@@ -27,5 +27,17 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             'database' => ':memory:',
             'prefix'   => '',
         ]);
+        $app['config']->set('laravel-updated-related', [
+            \Fico7489\Laravel\UpdatedRelated\Tests\Models\User::class => [
+                \Fico7489\Laravel\UpdatedRelated\Tests\Models\Order::class => 'orders',
+                \Fico7489\Laravel\UpdatedRelated\Tests\Models\OrderItem::class => 'orders.items',
+                \Fico7489\Laravel\UpdatedRelated\Tests\Models\Address::class => 'addresses',
+            ],
+        ]);
+    }
+    
+    protected function getPackageProviders($app)
+    {
+        return [\Fico7489\Laravel\UpdatedRelated\Tests\EventServiceProvider::class];
     }
 }

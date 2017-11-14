@@ -6,5 +6,5 @@ class OrderItem extends BaseModel
 {
     protected $table = 'order_items';
     
-    protected $fillable = ['order_id'];
+    protected $fillable = ['order_id', 'name'];
 }

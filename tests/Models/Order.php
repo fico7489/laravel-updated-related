@@ -6,10 +6,10 @@ class Order extends BaseModel
 {
     protected $table = 'orders';
     
-    protected $fillable = ['user_id'];
+    protected $fillable = ['user_id', 'number'];
 
     public function items()
     {
-        return $this->belongsToMany(OrderItem::class);
+        return $this->hasMany(OrderItem::class);
     }
 }
