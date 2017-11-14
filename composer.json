@@ -24,13 +24,13 @@
         }
     ],
     "require": {
-        "laravel/framework": "5.4.*"
+        "laravel/framework": "5.5.*"
     },
     "require-dev": {
         "mockery/mockery": "^0.9",
-        "orchestra/testbench": "3.4.*",
-        "orchestra/database": "~3.4.0",
-        "phpunit/phpunit": "~4.8|~5.0"
+        "orchestra/testbench": "3.5.*",
+        "orchestra/database": "~3.5.0",
+        "phpunit/phpunit": "6.*"
     },
     "suggest": {
         "fico7489/laravel-pivot": "Cover pivot changes."
