@@ -1,6 +1,6 @@
 {
     "name": "fico7489/laravel-updated-related",
-    "description": "The package adds new updated event for the model when any of related model updates.",
+    "description": "Fires ModelChanged event when base model or any related model is updated, created or deleted.",
     "keywords": [
         "laravel",
         "related models",
