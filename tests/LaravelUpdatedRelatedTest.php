@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class LaravelUpdatedRelatedTest extends TestCase
 {
-    static $events = [];
+    public static $events = [];
 
     public function setUp()
     {
@@ -39,7 +39,8 @@ class LaravelUpdatedRelatedTest extends TestCase
         $orderItem7 = OrderItem::create(['order_id' => $order4->id]);
     }
     
-    private function startListening(){
+    private function startListening()
+    {
         UpdateRelated::$events = [];
         TestListener::$events  = [];
     }

@@ -1,6 +1,7 @@
 <?php
 
 namespace Fico7489\Laravel\UpdatedRelated\Services;
+
 use Fico7489\Laravel\UpdatedRelated\Events\ModelChanged;
 
 class UpdateRelated
@@ -9,7 +10,8 @@ class UpdateRelated
     public static $eventsProcessed = [];
     public static $cofiguration = [];
     
-    public static function processEvents(){
+    public static function processEvents()
+    {
         $configurations = \Config::get('laravel-updated-related');
 
         foreach ($configurations as $baseModel => $environments) {
@@ -46,7 +48,7 @@ class UpdateRelated
                 }
                 $ids = $ids->unique()->sort();
                 
-                if(empty(self::$eventsProcessed[$baseModel][$name])){
+                if (empty(self::$eventsProcessed[$baseModel][$name])) {
                     self::$eventsProcessed[$baseModel][$name] = [];
                 }
                 self::$eventsProcessed[$baseModel][$name] += $ids->toArray();
@@ -55,12 +57,13 @@ class UpdateRelated
         self::$events = [];
     }
     
-    public static function fireEvents(){
+    public static function fireEvents()
+    {
         self::processEvents();
         
-        foreach(self::$eventsProcessed as $baseModel => $environments){
+        foreach (self::$eventsProcessed as $baseModel => $environments) {
             foreach ($environments as $environmentName => $ids) {
-                foreach($ids as $id){
+                foreach ($ids as $id) {
                     event(new ModelChanged($id, $baseModel, $environmentName));
                 }
             }

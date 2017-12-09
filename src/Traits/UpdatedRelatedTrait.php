@@ -21,9 +21,10 @@ trait UpdatedRelatedTrait
         });
     }
 
-    private static function fillEvents($model, $flush = false){
+    private static function fillEvents($model, $flush = false)
+    {
         UpdateRelated::$events[get_class($model)][] = $model->id;
-        if($flush){
+        if ($flush) {
             UpdateRelated::processEvents();
         }
     }
