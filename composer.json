@@ -6,7 +6,7 @@
         "related models",
         "laravel related models",
         "laravel updated related",
-        "laravel eloquent models",
+        "laravel updated events",
         "laravel related models event"
     ],
     "homepage": "https://github.com/fico7489/laravel-updated-related",
@@ -24,13 +24,10 @@
         }
     ],
     "require": {
-        "laravel/framework": "5.5.*"
+        "laravel/framework": "5.*"
     },
     "require-dev": {
-        "mockery/mockery": "^0.9",
-        "orchestra/testbench": "3.5.*",
-        "orchestra/database": "~3.5.0",
-        "phpunit/phpunit": "6.*"
+        "orchestra/testbench": "3.5.*"
     },
     "suggest": {
         "fico7489/laravel-pivot": "Cover pivot changes."

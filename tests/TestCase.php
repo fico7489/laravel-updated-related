@@ -7,10 +7,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     public function setUp()
     {
         parent::setUp();
-
-        $this->loadMigrationsFrom([
-            '--database' => 'testbench',
-        ]);
     }
 
     protected function getEnvironmentSetUp($app)
