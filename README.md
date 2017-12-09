@@ -1,140 +1,200 @@
-# Laravel revisionable upgrade
+# Laravel Updated Related
 
-Upgrade for the [Venturecraft Revisionable](https://github.com/VentureCraft/revisionable) package,  many useful methods are added. 
+Fires ModelChanged event when base model or any related model is updated, created or deleted.
 
 ## Why to use
 
-Yeah, revisionable package has userResponsible () method, but that is not enough and we can use saved revisions for much more useful stuff. We can find out who created, deleted and edited model, when the model was edited, when exact attribute from the model was edited and much more. 
+In laravel, we have the ability to listen to changes on eloquent models(create, delete, update), and when the model is changed we can do something with model e.g.  we can flush cache for this model.
 
-* You don't need to add **updated_by**, **deleted_by**, **created_by** to your tables.  
-* You don't need to add **updated_atribute_by** to your tables.  
-* You don't need to add **updated_atribute_to_value_by** to your tables.  
-* You don't need to add **updated_atribute_from_value_to_value_by** to your tables.  
-* You don't need to add **updated_atribute_at** to your tables.  
-* You don't need to add **updated_atribute_to_value_at** to your tables.  
-* You don't need to add **updated_atribute_from_value_to_value_at** to your tables.  
-* You don't need  **author_id**, **created_user_id**, **deleted_user_id** etc. or anything like that  
+But sometimes we want to do something with the model when this model is changed or related models are changed.
+For example, you have model Seller with related models Order, ZipCodes, Address and OrderItem. If any change on Seller, Address, Order, ZipCode or OrderItem is performed you want to do something with Seller e.g flush cache for seller because cache include related models data: 
 
-Don't pollute your tables with above table columns in the database, all above information is already stored in revisions table we just need the ability to get them, and this package will help you with that.
+```
+$seller = Cache::remember('seller_' . $id, $minutes, function () use($id){
+    return Seller::with(['orders', 'orders.items', 'addresses', 'zipCodes'])->find($id);
+});
+```
+
+In above case when Seller model is changed, we have to flush his cache 'seller'.$id but also when his particular related models are updated we have to flush data. Obviously we need some configuration with related models here and this package will help you with this.
+
+You can add this functionality without the package, but there is another huge problem. You can map related models and parent model to know when to flush cache but if you have batch form, e.g. for update all ZipCodes, and if you have 1000 zip codes and hit save, cache will be flushed 1000 times. This is not a problem for a flushing cache but if you have to update Elastic Search data or perform some other time-consuming operation then it is. 
+
+This package also solves above problem because model changed events are saved to an array and processed after the request when they are filtered to be unique, so if you update 1000 zip codes for the same seller only one event will be dispatched.
+
 
 ## Version Compatibility
 
-The package is available for larvel 5.* versions
+| Laravel Version | Package Tag | Supported | Development Branch
+|-----------------|-------------|-----------|-----------|
+| 5.5.x | 2.1.* | yes | master
+| 5.4.x | 2.0.* | yes | 2.0
+| 5.3.x | 1.3.* | yes | 1.3
+| 5.2.x | 1.2.* | yes | 1.2
+| <5.2 | - | no | -
+
+
 
 ## Install
 
 1.Install package with composer
 ```
-composer require fico7489/laravel-revisionable-upgrade:"*"
+composer require fico7489/laravel-updated-related:"*"
 ```
-
-2.Use Fico7489\Laravel\RevisionableUpgrade\Traits\RevisionableUpgradeTrait trait in your base model or only in particular models. Model which use RevisionableUpgradeTrait must also use RevisionableTrait;
-
+2.Add service provider to config/app.php
 ```
-...
-use Venturecraft\Revisionable\RevisionableTrait;
-use Fico7489\Laravel\RevisionableUpgrade\Traits\RevisionableUpgradeTrait;
-
-abstract class BaseModel extends Model
-{
-    use RevisionableTrait;
-    use RevisionableUpgradeTrait;
-    
-    //enable this if you want use methods that gets information about creating
-    protected $revisionCreationsEnabled = true;
-...
+Fico7489\Laravel\UpdatedRelated\Providers\UpdatedRelatedServiceProvider::class
 ```
+3.Publish configuration 
+```
+php artisan vendor:publish  --provider="Fico7489\Laravel\UpdatedRelated\Providers\UpdatedRelatedServiceProvider"
+```
+and after that adjust configuration(map model with related models), see more in below section.
+
+4.Use Fico7489\Laravel\UpdatedRelated\Traits\UpdatedRelatedTrait in your base model.
+
+5.Use Fico7489\Laravel\UpdatedRelated\Events\ModelChanged event which will be fired when any base model or any related model is updated, created or deleted.
 
 and that's it, you are ready to go.
 
-## New methods
+## Configuration
 
-* **userCreated()**
-Returns user which created this model
-* **userDeleted()**
-Returns user which deleted this model
-* **userUpdated($key = null, $newValue = null, $oldValue = null)**
-Returns user which updated this model (last user if there are more)
+Configuration is located at config/laravel-updated-related.php
 
-
-*  **revisionCreated()**
-Returns revision for model created
-*  **revisionDeleted()**
-Returns revision for model deleted
-* **revisionUpdated($key = null, $newValue = null, $oldValue = null)**
-Returns revision for model updated (last revision if there are more)
-
-
-* **dateUpdated($key = null, $newValue = null, $oldValue = null)**
-Returns date(Carbon\Carbon) for model updated (last revision if there are more)
-* **revisionsUpdated($key = null, $newValue = null, $oldValue = null)**
-Returns revisions for model updated
-* **usersUpdated($key = null, $newValue = null, $oldValue = null)**
-Returns users for model updated
-
-Clarification for methods with **($key = null, $newValue = null, $oldValue = null)**
-
-* All parameters are optional
-* If you provide $key method will look for changes on that key/field
-* If you provide $newValue method will look for changes where key/field is changed to this value
-* If you provide $oldValue method will look for changes where key/field is changed from this value
-
-We don't need **dateCreated** and **dateDeleted** because information about this is stored in created_at and deleted_at.
-We don't need **revisionsCreated**, **revisionsDeleted**, **usersCreated**, **usersDeleted** because model can be created or deleted only once.
-Methods which returns **user** and **users** are using model from **auth.model** configuration.
-
-## See some action
+1.You can create configuration in simple way : 
 
 ```
-$seller = Seller::create(['email' => 'test@test.com']);
+return [
+    \App\Models\User::class => [
+        [
+            \App\Models\Address::class         => 'addresses',
+            \App\Models\Order::class           => 'orders',
+            \App\Models\OrderItem::class       => 'orders.items',
+        ],
+    ],
+];
+```
+KEYS are base models, VALUES are arrays with related model => relation
 
-//get user who edited model
-$seller->userCreated();
+2.Or you can create configuration in detailed way if you need more environments for the same base model. : 
 
-//get user who deleted model
-$seller->userDeleted();
-
-//get user who updated model
-$seller->userUpdated();
-
-//get user who updated attribute name in model
-$seller->userUpdated('name');
-
-//get user who updated attribute name value to 'new_name'
-$seller->userUpdated('name', 'new_name');
-
-//get user who updated attribute name value to 'new_name' value from 'old_name' value
-$seller->userUpdated('name', 'new_name',  'old_name');
-
-//get revision model for create
-$seller->revisionCreated();
-
-//get revision model for delete
-$seller->revisionDeleted();
-
-//get revision model for update
-$seller->revisionUpdated();
-
-//get date for update
-$seller->dateUpdated();
-
-//get revisions for update
-$seller->revisionsUpdated();
-
-//get users for update
-$seller->usersUpdated();
+```
+return [
+    \App\Models\User::class => [
+        [
+            'name' => 'user-simple',
+            'related' => [
+                \App\Models\Address::class  => 'addresses',
+            ],
+        ],
+        [
+            'name' => 'user-extended',
+            'related' => [
+                \App\Models\Address::class   => 'addresses',
+                \App\Models\OrderItem::class => 'orders.items',
+            ],
+        ],
+    ]
+];
 ```
 
+KEYS are base models, VALUES are arrays with names (environment name) and related configuration (arrays with related model => relation). In "simple way" environment will be 'default'.
 
-## Improtant notes
-Models where you want use this package must use created_at timestamp
+## One real example
 
-If you want fetch users that have deleted models you must enable $revisionCreationsEnabled
+Configuration :
+
 ```
-protected $revisionCreationsEnabled = true;
+return [
+    \App\Models\User::class => [
+        [
+            \App\Models\Address::class => 'addresses',
+        ],
+    ],
+];
 ```
-[See more](https://github.com/VentureCraft/revisionable)
 
+Models :
+
+```
+...
+class User extends BaseModel
+{
+    public function addresses()
+    {
+        return $this->hasMany(Address::class);
+    }
+...
+```
+
+```
+...
+class Address extends BaseModel
+{
+....
+```
+
+Event service provider :
+```
+...
+protected $listen = [
+    ModelChanged::class => [
+        TestListener::class,
+    ],
+...
+```
+
+Listener :
+```
+class TestListener
+{
+    public function handle(ModelChanged $event)
+    {
+        echo 'id=' . $event->getId();
+        echo 'model=' . $event->getModel();
+        echo 'environment=' . $event->getName();
+    }
+}
+```
+
+```
+User::find(1)->touch();
+Address::find(2)->touch(); //let's assume that user_id is 10 here
+```
+
+With above code you will se this output:
+```
+id=1
+model=App\Models\User
+environment=default
+
+id=10
+model=App\Models\User
+environment=default
+```
+If you create, delete or update User or Address model ModelChanged will be dispatched.
+
+## Cover all changes in the database
+
+Do not use code like this one: 
+```
+User::whereIn('id', $ids)->update(['status' => 'ban']);
+```
+Because in that case, laravel does not use a model, it runs query directly without a model. To cover above changes you can change this code to :
+```
+$users = User::whereIn('id', $ids);
+foreach($users as $user){
+    $user->update(['status' => 'ban']);
+}
+```
+
+### Pivot events
+If you want to cover pivot events use this package : https://github.com/fico7489/laravel-pivot
+
+
+## When to use this package
+* clear cache for model
+* update elasticsearch data
+* and much more
 
 License
 ----
