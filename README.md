@@ -43,9 +43,11 @@ php artisan vendor:publish  --provider="Fico7489\Laravel\UpdatedRelated\Provider
 ```
 and after that adjust configuration(map model with related models), see more in below section.
 
-4.Use Fico7489\Laravel\UpdatedRelated\Traits\UpdatedRelatedTrait in your base model.
-
-5.Use Fico7489\Laravel\UpdatedRelated\Events\ModelChanged event which will be fired when any base model or any related model is updated, created or deleted.
+4.Use this trait
+```
+Fico7489\Laravel\UpdatedRelated\Traits\UpdatedRelatedTrait 
+```
+in your base model.
 
 and that's it, you are ready to go.
 
@@ -138,6 +140,8 @@ protected $listen = [
 
 Listener :
 ```
+use Fico7489\Laravel\UpdatedRelated\Events\ModelChanged;
+
 class TestListener
 {
     public function handle(ModelChanged $event)
