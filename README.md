@@ -1,6 +1,6 @@
 # Laravel Updated Related
 
-Fires ModelChanged event when base model or any related model is updated, created or deleted.
+Update **Elasticsearch** data or **clear cache** when the model or any related model is updated, created or deleted.
 
 ## Why to use
 
@@ -17,7 +17,7 @@ $seller = Cache::remember('seller_' . $id, $minutes, function () use($id){
 
 In above case when Seller model is changed, we have to flush his cache 'seller'.$id but also when his particular related models are updated we have to flush data. Obviously we need some configuration with related models here and this package will help you with this.
 
-You can add this functionality without the package, but there is another huge problem. You can map related models and parent model to know when to flush cache but if you have batch form, e.g. for update all ZipCodes, and if you have 1000 zip codes and hit save, cache will be flushed 1000 times. This is not a problem for a flushing cache but if you have to update Elastic Search data or perform some other time-consuming operation then it is. 
+You can add this functionality without the package, but there is another huge problem. You can map related models and parent model to know when to flush cache but if you have batch form, e.g. for update all ZipCodes, and if you have 1000 zip codes and hit save, cache will be flushed 1000 times. This is not a problem for a flushing cache but if you have to update Elasticsearch data or perform some other time-consuming operation then it is. 
 
 This package also solves above problem because model changed events are saved to an array and processed after the request when they are filtered to be unique, so if you update 1000 zip codes for the same seller only one event will be dispatched.
 
@@ -93,6 +93,8 @@ return [
 ```
 
 KEYS are base models, VALUES are arrays with names (environment name) and related configuration (arrays with related model => relation). In "simple way" environment will be 'default'.
+
+After you set a configuration just listened to the Model Change event that will be dispatched when any model or its related model (defined in configuration) is changed (updated, deleted, created).
 
 ## One real example
 
