@@ -94,7 +94,7 @@ return [
 
 KEYS are base models, VALUES are arrays with names (environment name) and related configuration (arrays with related model => relation). In "simple way" environment will be 'default'.
 
-After you set a configuration just listened to the Model Change event that will be dispatched when any model or its related model (defined in configuration) is changed (updated, deleted, created).
+After you set a configuration just listened to the **ModelChanged** event that will be dispatched when any model or its related model (defined in configuration) is changed (updated, deleted, created).
 
 ## One real example
 
