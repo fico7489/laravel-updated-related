@@ -1,13 +1,13 @@
 {
     "name": "fico7489/laravel-updated-related",
-    "description": "Fires ModelChanged event when base model or any related model is updated, created or deleted.",
+    "description": "Update Elasticsearch data or clear cache when the model or any related model is updated, created or deleted.",
     "keywords": [
         "laravel",
-        "related models",
+        "laravel elasticsearch",
+        "laravel cache",
         "laravel related models",
-        "laravel updated related",
-        "laravel updated events",
-        "laravel related models event"
+        "laravel update related",
+        "laravel update events"
     ],
     "homepage": "https://github.com/fico7489/laravel-updated-related",
     "support": {
