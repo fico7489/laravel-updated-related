@@ -9,6 +9,7 @@ trait UpdatedRelatedTrait
     public static function bootUpdatedRelatedTrait()
     {
         static::created(function ($model) {
+            // we must fill events after model is created, because before model does not have id
             self::fillEvents($model);
         });
 
@@ -17,6 +18,8 @@ trait UpdatedRelatedTrait
         });
 
         static::deleting(function ($model) {
+            // we must fill events before model is deleted
+            // also for deleted events we must fill events immediately, because we are doing queries with this model in fillEvents and this is problem if model is hard deleted
             self::fillEvents($model, true);
         });
     }
