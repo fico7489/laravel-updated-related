@@ -66,6 +66,8 @@ class UpdateRelated
 
     private static function prepareConfiguration($configurations)
     {
+        // all configuration should have a name, but if there is no name we should give 'default' name so we would have all configurations uniform
+        
         foreach ($configurations as $baseModel => $environments) {
             foreach ($environments as $k => $environment) {
                 if (!array_key_exists('name', $environment)) {
