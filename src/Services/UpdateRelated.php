@@ -15,16 +15,7 @@ class UpdateRelated
     {
         $configurations = Config::get('laravel-updated-related');
 
-        foreach ($configurations as $baseModel => $environments) {
-            foreach ($environments as $k => $environment) {
-                if (!array_key_exists('name', $environment)) {
-                    $configurations[$baseModel][$k] = [
-                        'name' => 'default',
-                        'related' => $environment,
-                    ];
-                }
-            }
-        }
+        $configurations = self::prepareConfiguration($configurations);
 
         foreach ($configurations as $baseModel => $environments) {
             foreach ($environments as $environment) {
@@ -71,5 +62,21 @@ class UpdateRelated
         }
         
         self::$eventsProcessed = [];
+    }
+
+    private static function prepareConfiguration($configurations)
+    {
+        foreach ($configurations as $baseModel => $environments) {
+            foreach ($environments as $k => $environment) {
+                if (!array_key_exists('name', $environment)) {
+                    $configurations[$baseModel][$k] = [
+                        'name' => 'default',
+                        'related' => $environment,
+                    ];
+                }
+            }
+        }
+
+        return $configurations;
     }
 }
