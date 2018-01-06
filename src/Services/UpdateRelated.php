@@ -3,6 +3,7 @@
 namespace Fico7489\Laravel\UpdatedRelated\Services;
 
 use Fico7489\Laravel\UpdatedRelated\Events\ModelChanged;
+use Config;
 
 class UpdateRelated
 {
@@ -12,7 +13,7 @@ class UpdateRelated
     
     public static function processEvents()
     {
-        $configurations = \Config::get('laravel-updated-related');
+        $configurations = Config::get('laravel-updated-related');
 
         foreach ($configurations as $baseModel => $environments) {
             foreach ($environments as $k => $environment) {
