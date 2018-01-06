@@ -20,7 +20,6 @@ class UpdateRelated
         // loop all configurations, ie the environments
         foreach ($configurations as $baseModel => $environments) {
             foreach ($environments as $environment) {
-
                 // environments name e.g. 'default'
                 $name = $environment['name'];
 
@@ -60,6 +59,8 @@ class UpdateRelated
                 self::$eventsProcessed[$baseModel][$name] += $modelIdsChanged->toArray();
             }
         }
+
+        // clear events that are already processed
         self::$events = [];
     }
     

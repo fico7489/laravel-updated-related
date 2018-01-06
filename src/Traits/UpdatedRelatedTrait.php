@@ -27,6 +27,7 @@ trait UpdatedRelatedTrait
         $modelType = get_class($model);
 
         UpdateRelated::$events[$modelType][] = $modelId;
+
         if ($flush) {
             UpdateRelated::processEvents();
         }

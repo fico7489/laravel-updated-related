@@ -11,6 +11,7 @@ class ProcessRelatedMiddleware
     {
         $response = $next($request);
 
+        // fire event after the request is finished
         UpdateRelated::fireEvents();
 
         return $response;
