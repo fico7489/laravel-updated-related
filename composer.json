@@ -27,7 +27,8 @@
         "laravel/framework": "5.*"
     },
     "require-dev": {
-        "orchestra/testbench": "3.5.*"
+        "orchestra/testbench": "3.*",
+        "friendsofphp/php-cs-fixer" : "2.*"
     },
     "suggest": {
         "fico7489/laravel-pivot": "Cover pivot changes."

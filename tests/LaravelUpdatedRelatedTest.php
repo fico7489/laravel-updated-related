@@ -25,18 +25,18 @@ class LaravelUpdatedRelatedTest extends TestCase
         $order2 = Order::create(['user_id' => $user->id]);
         $order3 = Order::create(['user_id' => $user2->id]);
         $order4 = Order::create(['user_id' => $user3->id]);
-        
+
         $orderItem = OrderItem::create(['order_id' => $order->id]);
-        
+
         $orderItem2 = OrderItem::create(['order_id' => $order2->id]);
         $orderItem3 = OrderItem::create(['order_id' => $order2->id]);
-        
+
         $orderItem4 = OrderItem::create(['order_id' => $order3->id]);
         $orderItem5 = OrderItem::create(['order_id' => $order3->id]);
         $orderItem6 = OrderItem::create(['order_id' => $order3->id]);
         $orderItem7 = OrderItem::create(['order_id' => $order4->id]);
     }
-    
+
     private function startListening()
     {
         UpdateRelated::$events = [];
@@ -48,14 +48,14 @@ class LaravelUpdatedRelatedTest extends TestCase
         $this->startListening();
         User::create();
         UpdateRelated::fireEvents();
-        
+
         $this->assertEquals(2, count(TestListener::$events));
         $this->assertEquals(4, TestListener::$events[0]->getId());
         $this->assertEquals(\Fico7489\Laravel\UpdatedRelated\Tests\Models\User::class, TestListener::$events[0]->getModel());
         $this->assertEquals('default', TestListener::$events[0]->getName());
         $this->assertEquals('special', TestListener::$events[1]->getName());
     }
-    
+
     public function test_update()
     {
         $this->startListening();
@@ -63,7 +63,7 @@ class LaravelUpdatedRelatedTest extends TestCase
         UpdateRelated::fireEvents();
         $this->assertEquals(2, count(TestListener::$events));
     }
-    
+
     public function test_delete()
     {
         $this->startListening();
@@ -71,8 +71,7 @@ class LaravelUpdatedRelatedTest extends TestCase
         UpdateRelated::fireEvents();
         $this->assertEquals(2, count(TestListener::$events));
     }
-    
-    
+
     public function test_create_related()
     {
         $this->startListening();
@@ -80,7 +79,7 @@ class LaravelUpdatedRelatedTest extends TestCase
         UpdateRelated::fireEvents();
         $this->assertEquals(1, count(TestListener::$events));
     }
-    
+
     public function test_update_related()
     {
         $this->startListening();
@@ -88,7 +87,7 @@ class LaravelUpdatedRelatedTest extends TestCase
         UpdateRelated::fireEvents();
         $this->assertEquals(1, count(TestListener::$events));
     }
-    
+
     public function test_delete_related()
     {
         $this->startListening();
@@ -96,8 +95,7 @@ class LaravelUpdatedRelatedTest extends TestCase
         UpdateRelated::fireEvents();
         $this->assertEquals(1, count(TestListener::$events));
     }
-    
-    
+
     public function test_create_related_second()
     {
         $this->startListening();
@@ -105,7 +103,7 @@ class LaravelUpdatedRelatedTest extends TestCase
         UpdateRelated::fireEvents();
         $this->assertEquals(1, count(TestListener::$events));
     }
-    
+
     public function test_update_related_second()
     {
         $this->startListening();
@@ -113,7 +111,7 @@ class LaravelUpdatedRelatedTest extends TestCase
         UpdateRelated::fireEvents();
         $this->assertEquals(1, count(TestListener::$events));
     }
-    
+
     public function test_delete_related_second()
     {
         $this->startListening();
@@ -121,8 +119,7 @@ class LaravelUpdatedRelatedTest extends TestCase
         UpdateRelated::fireEvents();
         $this->assertEquals(1, count(TestListener::$events));
     }
-    
-    
+
     public function test_create_id()
     {
         $this->startListening();
@@ -130,7 +127,7 @@ class LaravelUpdatedRelatedTest extends TestCase
         UpdateRelated::fireEvents();
         $this->assertEquals(2, TestListener::$events[0]->getId());
     }
-    
+
     public function test_update_id()
     {
         $this->startListening();
@@ -138,7 +135,7 @@ class LaravelUpdatedRelatedTest extends TestCase
         UpdateRelated::fireEvents();
         $this->assertEquals(2, TestListener::$events[0]->getId());
     }
-    
+
     public function test_delete_id()
     {
         $this->startListening();
@@ -146,8 +143,7 @@ class LaravelUpdatedRelatedTest extends TestCase
         UpdateRelated::fireEvents();
         $this->assertEquals(2, TestListener::$events[0]->getId());
     }
-    
-    
+
     public function test_three_events()
     {
         $this->startListening();
@@ -157,7 +153,7 @@ class LaravelUpdatedRelatedTest extends TestCase
         UpdateRelated::fireEvents();
         $this->assertEquals(4, count(TestListener::$events));
     }
-    
+
     public function test_two_with_delete()
     {
         $this->startListening();
@@ -166,7 +162,7 @@ class LaravelUpdatedRelatedTest extends TestCase
         UpdateRelated::fireEvents();
         $this->assertEquals(3, count(TestListener::$events));
     }
-    
+
     public function test_another()
     {
         $seller = Seller::create(['name' => 'seller']);

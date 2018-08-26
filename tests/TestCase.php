@@ -29,8 +29,8 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
                     'name' => 'special',
                     'related' => [
                         \Fico7489\Laravel\UpdatedRelated\Tests\Models\Address::class => 'addresses',
-                    ]
-                ]
+                    ],
+                ],
             ],
             \Fico7489\Laravel\UpdatedRelated\Tests\Models\Seller::class => [
                 [
@@ -39,7 +39,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             ],
         ]);
     }
-    
+
     protected function getPackageProviders($app)
     {
         return [

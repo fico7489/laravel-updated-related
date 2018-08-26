@@ -10,7 +10,7 @@ class UpdateRelated
     public static $events = [];
     public static $eventsProcessed = [];
     public static $cofiguration = [];
-    
+
     public static function processEvents()
     {
         $configurations = Config::get('laravel-updated-related');
@@ -30,13 +30,11 @@ class UpdateRelated
 
                 // in self::$events we have all changed models with ids, e.g. [App\Models\Address => [1, 2, 3]]
                 foreach (self::$events as $eventModel => $eventIds) {
-
                     // check if we have changed model in package configuration
                     if (array_key_exists($eventModel, $modelRelationMapping)) {
-
                         // get relation so we can reach root model from changed model
                         $relation = $modelRelationMapping[$eventModel];
-                        
+
                         $idsTmp = $baseModel::whereHas($relation, function ($query) use ($eventIds) {
                             return $query->whereIn('id', $eventIds);
                         })->get()->pluck('id');
@@ -55,7 +53,7 @@ class UpdateRelated
                 $modelIdsChanged = $modelIdsChanged->unique()->sort();
 
                 // finally store all changed ids and models in $eventsProcessed
-                self::$eventsProcessed[$baseModel][$name] = ! empty(self::$eventsProcessed[$baseModel][$name]) ? self::$eventsProcessed[$baseModel][$name] : [];
+                self::$eventsProcessed[$baseModel][$name] = !empty(self::$eventsProcessed[$baseModel][$name]) ? self::$eventsProcessed[$baseModel][$name] : [];
                 self::$eventsProcessed[$baseModel][$name] += $modelIdsChanged->toArray();
             }
         }
@@ -63,7 +61,7 @@ class UpdateRelated
         // clear events that are already processed
         self::$events = [];
     }
-    
+
     public static function fireEvents()
     {
         self::processEvents();
@@ -76,7 +74,7 @@ class UpdateRelated
                 }
             }
         }
-        
+
         self::$eventsProcessed = [];
     }
 
