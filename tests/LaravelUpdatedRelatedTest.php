@@ -13,7 +13,7 @@ class LaravelUpdatedRelatedTest extends TestCase
 {
     public static $events = [];
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
