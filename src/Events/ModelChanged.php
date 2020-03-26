@@ -10,9 +10,9 @@ class ModelChanged
 
     public function __construct($id, $model, $name)
     {
-        $this->id    = $id;
+        $this->id = $id;
         $this->model = $model;
-        $this->name  = $name;
+        $this->name = $name;
     }
 
     public function getId()

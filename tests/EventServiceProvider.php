@@ -2,8 +2,8 @@
 
 namespace Fico7489\Laravel\UpdatedRelated\Tests;
 
-use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Fico7489\Laravel\UpdatedRelated\Events\ModelChanged;
+use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
 {

@@ -2,8 +2,8 @@
 
 namespace Fico7489\Laravel\UpdatedRelated\Services;
 
-use Fico7489\Laravel\UpdatedRelated\Events\ModelChanged;
 use Config;
+use Fico7489\Laravel\UpdatedRelated\Events\ModelChanged;
 
 class UpdateRelated
 {

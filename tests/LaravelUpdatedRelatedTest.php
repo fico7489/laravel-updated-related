@@ -2,12 +2,12 @@
 
 namespace Fico7489\Laravel\UpdatedRelated\Tests;
 
-use Fico7489\Laravel\UpdatedRelated\Tests\Models\User;
+use Fico7489\Laravel\UpdatedRelated\Services\UpdateRelated;
+use Fico7489\Laravel\UpdatedRelated\Tests\Models\Address;
 use Fico7489\Laravel\UpdatedRelated\Tests\Models\Order;
 use Fico7489\Laravel\UpdatedRelated\Tests\Models\OrderItem;
 use Fico7489\Laravel\UpdatedRelated\Tests\Models\Seller;
-use Fico7489\Laravel\UpdatedRelated\Tests\Models\Address;
-use Fico7489\Laravel\UpdatedRelated\Services\UpdateRelated;
+use Fico7489\Laravel\UpdatedRelated\Tests\Models\User;
 
 class LaravelUpdatedRelatedTest extends TestCase
 {
@@ -40,7 +40,7 @@ class LaravelUpdatedRelatedTest extends TestCase
     private function startListening()
     {
         UpdateRelated::$events = [];
-        TestListener::$events  = [];
+        TestListener::$events = [];
     }
 
     public function test_create()
